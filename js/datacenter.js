@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // Authentication check
+  // Check authentication
   const token = localStorage.getItem('authToken');
   if (!token) {
     window.location.href = '/login.html';
@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const tabContents = document.querySelectorAll('.tab-content');
   const prevBtn = document.getElementById('prev-btn');
   const nextBtn = document.getElementById('next-btn');
-  const submitBtn = document.getElementById('submit-design');
+  const submitBtn = document.getElementById('submit-btn');
   const typeCards = document.querySelectorAll('.type-card');
   const rackCountSlider = document.getElementById('rack-count');
   const rackValue = document.getElementById('rack-value');
@@ -24,8 +24,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const onSiteSupport = document.getElementById('on-site-support');
   const projectName = document.getElementById('project-name');
   const notes = document.getElementById('notes');
-  const logoutBtn = document.getElementById('logout-btn');
-  const dataCenterList = document.getElementById('data-center-list');
+  const estimatedCost = document.getElementById('estimated-cost');
+  const estimatedFootprint = document.getElementById('estimated-footprint');
+  const estimatedPue = document.getElementById('estimated-pue');
 
   // Summary fields
   const summaryFields = {
@@ -34,18 +35,24 @@ document.addEventListener('DOMContentLoaded', () => {
     power: document.getElementById('summary-power'),
     cooling: document.getElementById('summary-cooling'),
     redundancy: document.getElementById('summary-redundancy'),
-    security: document.getElementById('summary-security'),
-    remote: document.getElementById('summary-remote'),
-    onsite: document.getElementById('summary-onsite')
+    security: document.getElementById('summary-security')
   };
 
   let currentStep = 0;
+  let savedDataCenters = [];
 
-  // Initialize the form
-  function initForm() {
+  // Initialize
+  function init() {
+    setupTabs();
+    setupNavigation();
+    setupTypeSelection();
+    setupSliders();
+    setupFormListeners();
+    setupFormSubmission();
+    loadSavedDataCenters();
     updateStep();
     updateSummary();
-    loadDataCenters();
+    updateEstimates();
   }
 
   // Tab navigation
@@ -55,6 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
         currentStep = index;
         updateStep();
         updateSummary();
+        updateEstimates();
       });
     });
   }
@@ -65,6 +73,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (currentStep > 0) {
         currentStep--;
         updateStep();
+        updateSummary();
+        updateEstimates();
       }
     });
 
@@ -72,6 +82,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (currentStep < tabContents.length - 1) {
         currentStep++;
         updateStep();
+        updateSummary();
+        updateEstimates();
       }
     });
   }
@@ -86,8 +98,9 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.classList.toggle('active', index === currentStep);
     });
 
-    prevBtn.style.display = currentStep === 0 ? 'none' : 'inline-block';
+    prevBtn.disabled = currentStep === 0;
     nextBtn.style.display = currentStep === tabContents.length - 1 ? 'none' : 'inline-block';
+    submitBtn.style.display = currentStep === tabContents.length - 1 ? 'inline-block' : 'none';
   }
 
   // Type selection
@@ -97,6 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
         typeCards.forEach(c => c.classList.remove('active'));
         card.classList.add('active');
         updateSummary();
+        updateEstimates();
       });
     });
   }
@@ -106,21 +120,38 @@ document.addEventListener('DOMContentLoaded', () => {
     rackCountSlider.addEventListener('input', () => {
       rackValue.textContent = rackCountSlider.value;
       updateSummary();
+      updateEstimates();
     });
 
     powerUsageSlider.addEventListener('input', () => {
       powerValue.textContent = powerUsageSlider.value;
       updateSummary();
+      updateEstimates();
     });
   }
 
   // Form element listeners
   function setupFormListeners() {
-    coolingSelect.addEventListener('change', updateSummary);
-    redundancySelect.addEventListener('change', updateSummary);
-    securitySelect.addEventListener('change', updateSummary);
-    remoteMonitoring.addEventListener('change', updateSummary);
-    onSiteSupport.addEventListener('change', updateSummary);
+    coolingSelect.addEventListener('change', () => {
+      updateSummary();
+      updateEstimates();
+    });
+    redundancySelect.addEventListener('change', () => {
+      updateSummary();
+      updateEstimates();
+    });
+    securitySelect.addEventListener('change', () => {
+      updateSummary();
+      updateEstimates();
+    });
+    remoteMonitoring.addEventListener('change', () => {
+      updateSummary();
+      updateEstimates();
+    });
+    onSiteSupport.addEventListener('change', () => {
+      updateSummary();
+      updateEstimates();
+    });
   }
 
   // Update summary section
@@ -145,70 +176,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Security
     summaryFields.security.textContent = securitySelect.options[securitySelect.selectedIndex].text;
-
-    // Remote Monitoring
-    summaryFields.remote.textContent = remoteMonitoring.checked ? 'Yes' : 'No';
-
-    // On-site Support
-    summaryFields.onsite.textContent = onSiteSupport.checked ? 'Yes' : 'No';
   }
 
-  // Form submission
-  function setupFormSubmission() {
-    document.getElementById('designer-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      
-      // Validate required fields
-      if (!projectName.value.trim()) {
-        alert('Please enter a project name.');
-        return;
-      }
-
-      const selectedTypeCard = document.querySelector('.type-card.active');
-      if (!selectedTypeCard) {
-        alert('Please select a data center type.');
-        return;
-      }
-
-      // Prepare payload
-      const payload = {
-        projectName: projectName.value.trim(),
-        type: selectedTypeCard.dataset.type,
-        racks: parseInt(rackCountSlider.value),
-        power: parseInt(powerUsageSlider.value),
-        cooling: coolingSelect.value,
-        redundancy: redundancySelect.value,
-        security: securitySelect.value,
-        remoteMonitoring: remoteMonitoring.checked,
-        onSiteSupport: onSiteSupport.checked,
-        notes: notes.value.trim(),
-        estimatedCost: calculateEstimatedCost()
-      };
-
-      try {
-        const response = await fetch('/api/datacenters', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
-          body: JSON.stringify(payload)
-        });
-
-        if (!response.ok) {
-          const error = await response.json();
-          throw new Error(error.message || 'Failed to save data center');
-        }
-
-        const result = await response.json();
-        alert('Data center configuration saved successfully!');
-        loadDataCenters();
-        resetForm();
-      } catch (error) {
-        console.error('Error saving data center:', error);
-        alert(`Error: ${error.message}`);
-      }
-    });
+  // Update estimates
+  function updateEstimates() {
+    const racks = parseInt(rackCountSlider.value);
+    const power = parseInt(powerUsageSlider.value);
+    const selectedTypeCard = document.querySelector('.type-card.active');
+    const type = selectedTypeCard ? selectedTypeCard.dataset.type : 'modular';
+    
+    // Calculate estimated cost
+    let cost = calculateEstimatedCost();
+    estimatedCost.textContent = `$${cost.toLocaleString()}`;
+    
+    // Calculate footprint (rough estimate)
+    let footprint = racks * 10; // 10 sq ft per rack base
+    if (type === 'traditional') {
+      footprint *= 1.5; // Traditional requires more space
+    }
+    estimatedFootprint.textContent = `${footprint.toLocaleString()} sq.ft`;
+    
+    // Calculate PUE estimate
+    let pue = 1.4; // Base PUE
+    if (coolingSelect.value === 'liquid') {
+      pue = 1.2;
+    } else if (coolingSelect.value === 'hybrid') {
+      pue = 1.3;
+    }
+    estimatedPue.textContent = pue.toFixed(1);
   }
 
   // Calculate estimated cost
@@ -261,21 +256,91 @@ document.addEventListener('DOMContentLoaded', () => {
     return Math.round(cost);
   }
 
+  // Form submission
+  function setupFormSubmission() {
+    submitBtn.addEventListener('click', async () => {
+      // Validate required fields
+      if (!projectName.value.trim()) {
+        alert('Please enter a project name.');
+        return;
+      }
+
+      const selectedTypeCard = document.querySelector('.type-card.active');
+      if (!selectedTypeCard) {
+        alert('Please select a data center type.');
+        return;
+      }
+
+      // Prepare payload
+      const payload = {
+        projectName: projectName.value.trim(),
+        type: selectedTypeCard.dataset.type,
+        racks: parseInt(rackCountSlider.value),
+        power: parseInt(powerUsageSlider.value),
+        cooling: coolingSelect.value,
+        redundancy: redundancySelect.value,
+        security: securitySelect.value,
+        remoteMonitoring: remoteMonitoring.checked,
+        onSiteSupport: onSiteSupport.checked,
+        notes: notes.value.trim(),
+        estimatedCost: calculateEstimatedCost()
+      };
+
+      try {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+
+        const response = await fetch('/api/datacenters', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          alert('Data center configuration saved successfully!');
+          loadSavedDataCenters();
+          resetForm();
+        } else {
+          alert(result.message || 'Error saving data center configuration.');
+        }
+
+      } catch (error) {
+        console.error('Submit error:', error);
+        alert('Error saving data center configuration. Please try again.');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit to Vertiv';
+      }
+    });
+  }
+
   // Reset form
   function resetForm() {
-    document.getElementById('designer-form').reset();
+    projectName.value = '';
+    notes.value = '';
     typeCards.forEach(c => c.classList.remove('active'));
     rackCountSlider.value = 10;
     powerUsageSlider.value = 100;
     rackValue.textContent = '10';
     powerValue.textContent = '100';
+    coolingSelect.selectedIndex = 0;
+    redundancySelect.selectedIndex = 0;
+    securitySelect.selectedIndex = 0;
+    remoteMonitoring.checked = false;
+    onSiteSupport.checked = false;
     currentStep = 0;
     updateStep();
     updateSummary();
+    updateEstimates();
   }
 
   // Load saved data centers
-  async function loadDataCenters() {
+  async function loadSavedDataCenters() {
     try {
       const response = await fetch('/api/datacenters', {
         headers: {
@@ -283,27 +348,31 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to fetch data centers');
+      const result = await response.json();
+
+      if (result.success) {
+        savedDataCenters = result.datacenters;
+        renderSavedDataCenters();
       }
 
-      const dataCenters = await response.json();
-      renderDataCenterList(dataCenters);
     } catch (error) {
-      console.error('Error loading data centers:', error);
-      dataCenterList.innerHTML = '<p>Error loading data centers. Please try again later.</p>';
+      console.error('Load data centers error:', error);
     }
   }
 
-  // Render data center list
-  function renderDataCenterList(list) {
-    if (list.length === 0) {
-      dataCenterList.innerHTML = '<p>No saved data centers yet.</p>';
+  // Render saved data centers
+  function renderSavedDataCenters() {
+    const container = document.getElementById('data-center-list');
+    
+    if (!container) return;
+
+    if (savedDataCenters.length === 0) {
+      container.innerHTML = '<p>No saved data centers yet.</p>';
       return;
     }
 
-    dataCenterList.innerHTML = '';
-    list.forEach(dc => {
+    container.innerHTML = '';
+    savedDataCenters.forEach(dc => {
       const card = document.createElement('div');
       card.className = 'dc-card';
       card.innerHTML = `
@@ -317,12 +386,12 @@ document.addEventListener('DOMContentLoaded', () => {
         <p><strong>Remote Monitoring:</strong> ${dc.remoteMonitoring ? 'Yes' : 'No'}</p>
         <p><strong>On-site Support:</strong> ${dc.onSiteSupport ? 'Yes' : 'No'}</p>
         <p><strong>Notes:</strong> ${dc.notes || '—'}</p>
-        <p><strong>Estimated Cost:</strong> ₹${dc.estimatedCost.toLocaleString()}</p>
+        <p><strong>Estimated Cost:</strong> $${dc.estimatedCost.toLocaleString()}</p>
         <div class="dc-actions">
           <button class="dc-delete" data-id="${dc._id}">Delete</button>
         </div>
       `;
-      dataCenterList.appendChild(card);
+      container.appendChild(card);
 
       // Add delete handler
       card.querySelector('.dc-delete').addEventListener('click', () => deleteDataCenter(dc._id));
@@ -343,33 +412,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to delete data center');
+      const result = await response.json();
+
+      if (result.success) {
+        alert('Data center configuration deleted successfully!');
+        loadSavedDataCenters();
+      } else {
+        alert(result.message || 'Error deleting data center configuration.');
       }
 
-      alert('Data center configuration deleted successfully!');
-      loadDataCenters();
     } catch (error) {
-      console.error('Error deleting data center:', error);
-      alert(`Error: ${error.message}`);
+      console.error('Delete error:', error);
+      alert('Error deleting data center configuration. Please try again.');
     }
   }
 
-  // Logout
-  function setupLogout() {
-    logoutBtn.addEventListener('click', () => {
-      localStorage.removeItem('authToken');
-      window.location.href = '/login.html';
-    });
-  }
-
-  // Initialize all functionality
-  setupTabs();
-  setupNavigation();
-  setupTypeSelection();
-  setupSliders();
-  setupFormListeners();
-  setupFormSubmission();
-  setupLogout();
-  initForm();
+  // Initialize everything
+  init();
 });
