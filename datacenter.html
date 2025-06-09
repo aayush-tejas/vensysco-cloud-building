@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Center Designer | Vensysco Cloud</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/datacenter.css">
+</head>
+<body>
+    <!-- Header (same as index.html) -->
+     <header class="header">
+        
+        <div class="container">
+            <nav class="navbar">
+                <a href="index.html" class="logo">
+                    <img src="assets/icons/logo.svg" alt="Vensysco Cloud Logo">
+                    <span>Vensysco<span class="highlight">Cloud</span></span>
+                </a>
+                
+                <div class="nav-links">
+                    <a href="#features">Features</a>
+                    <a href="#pricing">Pricing</a>
+                    <a href="#services">Services</a>
+                    <a href="#about">About</a>
+                    <a href="#contact">Contact</a>
+                </div>
+                
+                <div class="auth-buttons">
+                    <a href="login.html" class="btn btn-outline">Login</a>
+                    <a href="signup.html" class="btn btn-primary">Sign Up</a>
+                </div>
+                
+                <div class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+    
+    <main class="data-center-designer">
+        <div class="container">
+            <div class="designer-header">
+                <h1>Design Your On-Premise Data Center</h1>
+                <p>Configure your ideal data center solution with our intuitive designer tool</p>
+            </div>
+            
+            <div class="designer-container">
+                <div class="designer-sidebar">
+                    <div class="designer-tabs">
+                        <button class="tab-btn active" data-tab="type">1. Type</button>
+                        <button class="tab-btn" data-tab="capacity">2. Capacity</button>
+                        <button class="tab-btn" data-tab="infrastructure">3. Infrastructure</button>
+                        <button class="tab-btn" data-tab="review">4. Review</button>
+                    </div>
+                    
+                    <div class="tab-content active" id="type">
+                        <h3>Select Data Center Type</h3>
+                        <div class="type-options">
+                            <div class="type-card" data-type="modular">
+                                <div class="type-icon">
+                                    <i class="fas fa-cubes"></i>
+                                </div>
+                                <h4>Modular</h4>
+                                <p>Prefabricated, scalable units that can grow with your needs</p>
+                            </div>
+                            <div class="type-card" data-type="traditional">
+                                <div class="type-icon">
+                                    <i class="fas fa-building"></i>
+                                </div>
+                                <h4>Traditional</h4>
+                                <p>Custom-built facility designed to your exact specifications</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="capacity">
+                        <h3>Capacity Requirements</h3>
+                        <div class="form-group">
+                            <label for="rack-count">Number of Racks</label>
+                            <input type="range" id="rack-count" min="1" max="100" value="10">
+                            <div class="range-value"><span id="rack-value">10</span> racks</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="power-usage">Estimated Power Usage (kW)</label>
+                            <input type="range" id="power-usage" min="10" max="1000" value="100">
+                            <div class="range-value"><span id="power-value">100</span> kW</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="cooling">Cooling Requirements</label>
+                            <select id="cooling">
+                                <option value="standard">Standard Air Cooling</option>
+                                <option value="liquid">Liquid Cooling</option>
+                                <option value="hybrid">Hybrid Cooling</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="infrastructure">
+                        <h3>Infrastructure Options</h3>
+                        
+                        <div class="form-group">
+                            <label for="redundancy">Power Redundancy</label>
+                            <select id="redundancy">
+                                <option value="n">N (No redundancy)</option>
+                                <option value="n+1">N+1</option>
+                                <option value="2n">2N</option>
+                                <option value="2n+1">2N+1</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="security">Security Level</label>
+                            <select id="security">
+                                <option value="basic">Basic (Card access)</option>
+                                <option value="standard">Standard (Card + Biometrics)</option>
+                                <option value="high">High (Multi-factor authentication)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="remote-monitoring"> 24/7 Remote Monitoring
+                            </label>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="on-site-support"> On-site Support Contract
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="review">
+                        <h3>Review Your Configuration</h3>
+                        <div class="summary-card">
+                            <div class="summary-item">
+                                <span>Data Center Type:</span>
+                                <span id="summary-type">Not selected</span>
+                            </div>
+                            <div class="summary-item">
+                                <span>Rack Capacity:</span>
+                                <span id="summary-racks">0</span>
+                            </div>
+                            <div class="summary-item">
+                                <span>Power Capacity:</span>
+                                <span id="summary-power">0 kW</span>
+                            </div>
+                            <div class="summary-item">
+                                <span>Cooling:</span>
+                                <span id="summary-cooling">Not selected</span>
+                            </div>
+                            <div class="summary-item">
+                                <span>Redundancy:</span>
+                                <span id="summary-redundancy">Not selected</span>
+                            </div>
+                            <div class="summary-item">
+                                <span>Security:</span>
+                                <span id="summary-security">Not selected</span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="project-name">Project Name</label>
+                            <input type="text" id="project-name" placeholder="My Data Center Project">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="notes">Additional Notes</label>
+                            <textarea id="notes" rows="3" placeholder="Any special requirements..."></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="designer-nav">
+                        <button class="btn btn-outline" id="prev-btn" disabled>Previous</button>
+                        <button class="btn btn-primary" id="next-btn">Next</button>
+                        <button class="btn btn-secondary" id="submit-btn" style="display: none;">Submit to Vertiv</button>
+                    </div>
+                </div>
+                
+                <div class="designer-preview">
+                    <div class="preview-header">
+                        <h3>Your Data Center Preview</h3>
+                        <div class="view-options">
+                            <button class="view-btn active" data-view="3d"><i class="fas fa-cube"></i> 3D</button>
+                            <button class="view-btn" data-view="floorplan"><i class="fas fa-vector-square"></i> Floorplan</button>
+                        </div>
+                    </div>
+                    
+                    <div class="preview-container">
+                        <div class="preview-3d active">
+                            <!-- 3D visualization placeholder -->
+                            <div class="placeholder-3d">
+                                <i class="fas fa-server"></i>
+                                <p>Your data center visualization will appear here</p>
+                            </div>
+                        </div>
+                        <div class="preview-floorplan">
+                            <!-- Floorplan visualization placeholder -->
+                            <div class="placeholder-floorplan">
+                                <i class="fas fa-vector-square"></i>
+                                <p>Your floorplan will appear here</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="preview-specs">
+                        <div class="spec-card">
+                            <h4>Estimated Cost</h4>
+                            <div class="spec-value" id="estimated-cost">$0</div>
+                        </div>
+                        <div class="spec-card">
+                            <h4>Footprint</h4>
+                            <div class="spec-value" id="estimated-footprint">0 sq.ft</div>
+                        </div>
+                        <div class="spec-card">
+                            <h4>PUE Estimate</h4>
+                            <div class="spec-value" id="estimated-pue">0.0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Footer (same as index.html) -->
+     <footer class="footer">
+        <a href="login.html">Login</a> | <a href="signup.html">Sign Up</a>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col footer-about">
+                    <a href="index.html" class="footer-logo">
+                        <img src="assets/icons/logo-white.svg" alt="Vensysco Cloud Logo">
+                        <span>Vensysco<span class="highlight">Cloud</span></span>
+                    </a>
+                    <p class="footer-about-text">Vensysco Cloud provides premium cloud hosting solutions with unmatched performance, security, and reliability.</p>
+                    <div class="footer-social">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h3 class="footer-title">Services</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Cloud Hosting</a></li>
+                        <li><a href="#">VPS Hosting</a></li>
+                        <li><a href="#">Dedicated Servers</a></li>
+                        <li><a href="#">Managed Cloud</a></li>
+                        <li><a href="#">Domain Registration</a></li>
+                        <li><a href="#">SSL Certificates</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3 class="footer-title">Company</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Press</a></li>
+                        <li><a href="#">Partners</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3 class="footer-title">Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Knowledge Base</a></li>
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">Community Forums</a></li>
+                        <li><a href="#">System Status</a></li>
+                        <li><a href="#">Submit a Ticket</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3 class="footer-title">Contact</h3>
+                    <ul class="footer-contact">
+                        <li><i class="fas fa-map-marker-alt"></i> Bhutani AlphaThum Sector 90 , Noida</li>
+                        <li><i class="fas fa-phone"></i> 1122334455</li>
+                        <li><i class="fas fa-envelope"></i> support@vensysco.com</li>
+                    </ul>
+                    <div class="footer-newsletter">
+                        <h4>Subscribe to Newsletter</h4>
+                        <form class="newsletter-form">
+                            <input type="email" placeholder="Your email address">
+                            <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="footer-copyright">
+                    &copy; 2023 Vensysco Cloud. All Rights Reserved.
+                </div>
+                <div class="footer-legal">
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <a href="#" class="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
+    <script src="js/animations.js"></script>
+  </body>
+  </html>
+    <script src="js/datacenter.js"></script>
+</body>
+</html>

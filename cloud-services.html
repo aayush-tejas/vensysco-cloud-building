@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vensysco Cloud – Cloud Services</title>
+  <meta name="description" content="Customize your cloud infrastructure with Vensysco’s interactive Cloud Services dashboard."/>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/icons/favicon.png" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Shared CSS -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+
+  <!-- Cloud Services–specific CSS -->
+  <link rel="stylesheet" href="css/cloud-dashboard.css" />
+</head>
+<body>
+  <!-- Preloader -->
+  <div class="preloader">
+    <div class="loader">
+      <div class="cloud-icon">
+        <i class="fas fa-cloud"></i>
+      </div>
+      <div class="loading-bar">
+        <div class="progress"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header/Navigation -->
+  <header class="header">
+    <div class="container">
+      <nav class="navbar">
+        <a href="index.html" class="logo">
+          <img src="assets/icons/logo.svg" alt="Vensysco Cloud Logo" />
+          <span class="logo-text">VENSYSCO<span class="highlight">CLOUD</span></span>
+        </a>
+
+        <div class="nav-links">
+          <a href="index.html#features">Features</a>
+          <a href="index.html#pricing">Pricing</a>
+          <a href="index.html#services">Services</a>
+          <a href="index.html#about">About</a>
+          <a href="index.html#contact">Contact</a>
+
+          <!-- Products Dropdown (active on Cloud Services page) -->
+          <div class="dropdown">
+            <button class="dropbtn active">
+              Products <i class="fas fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+              <a href="datacenter.html">Data Center</a>
+              <a href="cloud-services.html" class="active">Cloud Services</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="auth-buttons">
+          <a href="login.html" class="btn btn-outline">Login</a>
+          <a href="signup.html" class="btn btn-primary">Sign Up</a>
+        </div>
+
+        <div class="mobile-menu-btn">
+          <i class="fas fa-bars"></i>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content: Cloud Services Dashboard -->
+  <main class="dashboard-main container">
+    <h2><i class="fas fa-server"></i> Cloud Services Configuration</h2>
+    <p>Customize your cloud infrastructure below:</p>
+
+    <div class="dashboard-grid">
+      <!-- Navigation Pane -->
+      <nav class="dashboard-nav">
+        <ul>
+          <li class="active" data-section="compute"><i class="fas fa-server"></i> Compute</li>
+          <li data-section="storage"><i class="fas fa-database"></i> Storage</li>
+          <li data-section="network"><i class="fas fa-network-wired"></i> Network</li>
+          <li data-section="kubernetes"><i class="fas fa-cubes"></i> Kubernetes</li>
+          <li data-section="db"><i class="fas fa-table"></i> DBaaS</li>
+          <li data-section="firewall"><i class="fas fa-shield-alt"></i> Firewall</li>
+          <li data-section="metrics"><i class="fas fa-chart-bar"></i> Metrics</li>
+          <li data-section="api"><i class="fas fa-code"></i> API</li>
+          <li data-section="antivirus"><i class="fas fa-virus"></i> Antivirus</li>
+          <li data-section="summary"><i class="fas fa-file-alt"></i> Summary</li>
+        </ul>
+      </nav>
+
+      <!-- Configuration Panels -->
+      <div class="configuration-panels">
+        <div class="form-group">
+           <label>
+               <input type="checkbox" id="data-recovery">
+                   Enable Data Recovery
+           </label>
+      </div>
+
+        <!-- ▶️ Compute Panel -->
+        <div class="panel active" id="compute-panel">
+          <h3><i class="fas fa-server"></i> Compute Configuration</h3>
+          <div class="form-group">
+            <label for="instance-type">Instance Type</label>
+            <select id="instance-type">
+              <option value="general">General Purpose</option>
+              <option value="compute-optimized">Compute Optimized</option>
+              <option value="memory-optimized">Memory Optimized</option>
+              <option value="gpu-optimized">GPU Optimized</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="operating-system">Operating System</label>
+            <select id="operating-system">
+              <option value="ubuntu-22">Ubuntu 22.04 LTS</option>
+              <option value="ubuntu-20">Ubuntu 20.04 LTS</option>
+              <option value="centos-7">CentOS 7</option>
+              <option value="centos-8">CentOS 8</option>
+              <option value="debian-11">Debian 11</option>
+              <option value="windows-2022">Windows Server 2022</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="machine-size">Machine Size</label>
+            <select id="machine-size">
+              <option value="small">Small (1–2 vCPU, 4GB RAM)</option>
+              <option value="medium" selected>Medium (4 vCPU, 16GB RAM)</option>
+              <option value="large">Large (8 vCPU, 32GB RAM)</option>
+              <option value="xlarge">X-Large (16 vCPU, 64GB RAM)</option>
+              <option value="custom">Custom</option>
+            </select>
+          </div>
+          <div class="form-group custom-size" style="display: none;">
+            <label for="custom-vcpu">vCPU Count: <span id="custom-vcpu-value">4</span></label>
+            <input type="range" id="custom-vcpu" min="1" max="64" value="4" />
+          </div>
+          <div class="form-group custom-size" style="display: none;">
+            <label for="custom-memory">Memory (GB): <span id="custom-memory-value">16</span></label>
+            <input type="range" id="custom-memory" min="1" max="256" value="16" />
+          </div>
+          <div class="form-group">
+            <label for="boot-disk-size">Boot Disk Size (GB): <span id="boot-disk-value">50</span></label>
+            <input type="range" id="boot-disk-size" min="10" max="1000" value="50" />
+          </div>
+          <div class="form-group">
+            <label for="data-center-location">Data Center Location</label>
+            <select id="data-center-location">
+              <option value="us-east-1">US East (N. Virginia)</option>
+              <option value="us-west-1">US West (Oregon)</option>
+              <option value="eu-central-1">EU (Frankfurt)</option>
+              <option value="ap-south-1">Asia Pacific (Mumbai)</option>
+              <option value="ap-southeast-1">Asia Pacific (Singapore)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="instance-count">Number of Instances: <span id="instance-count-value">1</span></label>
+            <input type="range" id="instance-count" min="1" max="100" value="1" />
+          </div>
+          <div class="form-group">
+            <label>IP Configuration</label>
+            <div class="checkbox-group">
+              <label>
+                <input type="checkbox" id="enable-ipv4" checked />
+                IPv4 Address
+              </label>
+              <label>
+                <input type="checkbox" id="enable-ipv6" />
+                IPv6 Address
+              </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="committed-usage">Committed Usage</label>
+            <select id="committed-usage">
+              <option value="none">No Commitment (On-Demand)</option>
+              <option value="1-year">1 Year Commitment (30% discount)</option>
+              <option value="3-year">3 Year Commitment (50% discount)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- ▶️ Storage Panel -->
+        <div class="panel" id="storage-panel">
+          <h3><i class="fas fa-database"></i> Storage Configuration</h3>
+          <div class="form-group">
+            <label>Storage Types</label>
+            <div class="checkbox-group">
+              <label>
+                <input type="checkbox" id="enable-block-storage" checked />
+                Block Storage
+              </label>
+              <label>
+                <input type="checkbox" id="enable-object-storage" />
+                Object Storage
+              </label>
+              <label>
+                <input type="checkbox" id="enable-archive-storage" />
+                Archive Storage
+              </label>
+            </div>
+          </div>
+          <div class="form-group block-storage-config">
+            <label for="block-storage-type">Block Storage Type</label>
+            <select id="block-storage-type">
+              <option value="ssd">SSD</option>
+              <option value="hdd">HDD</option>
+              <option value="nvme">NVMe</option>
+            </select>
+          </div>
+          <div class="form-group block-storage-config">
+            <label for="block-storage-size">Block Storage Size (GB): <span id="block-storage-value">100</span></label>
+            <input type="range" id="block-storage-size" min="10" max="10000" value="100" />
+          </div>
+          <div class="form-group">
+            <label for="backup-frequency">Backup Frequency</label>
+            <select id="backup-frequency">
+              <option value="none">No Backups</option>
+              <option value="daily">Daily</option>
+              <option value="weekly">Weekly</option>
+              <option value="monthly">Monthly</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="snapshot-policy">Snapshot Policy</label>
+            <select id="snapshot-policy">
+              <option value="none">No Snapshots</option>
+              <option value="daily">Daily (7-day retention)</option>
+              <option value="weekly">Weekly (4-week retention)</option>
+              <option value="critical">Critical (30-day retention)</option>
+            </select>
+          </div>
+          <div class="form-group object-storage-config" style="display: none;">
+            <label for="object-storage-size">Object Storage Size (GB): <span id="object-storage-value">100</span></label>
+            <input type="range" id="object-storage-size" min="10" max="100000" value="100" />
+          </div>
+          <div class="form-group archive-storage-config" style="display: none;">
+            <label for="archive-storage-size">Archive Storage Size (GB): <span id="archive-storage-value">100</span></label>
+            <input type="range" id="archive-storage-size" min="10" max="1000000" value="100" />
+          </div>
+        </div>
+
+        <!-- ▶️ Network Panel -->
+        <div class="panel" id="network-panel">
+          <h3><i class="fas fa-network-wired"></i> Network Configuration</h3>
+          <div class="form-group">
+            <label for="external-tx">External Network Transmit (instances)</label>
+            <input type="number" id="external-tx" min="0" placeholder="Enter Number of instances" />
+          </div>
+          <div class="form-group">
+            <label for="external-rx">External Network Receive (instances)</label>
+            <input type="number" id="external-rx" min="0" placeholder="Enter Number of instances" />
+          </div>
+          <div class="form-group">
+            <label for="high-availability">High Availability</label>
+            <select id="high-availability">
+              <option value="no" selected>No</option>
+              <option value="yes">Yes</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="dhcp">DHCP</label>
+            <select id="dhcp">
+              <option value="no" selected>No</option>
+              <option value="yes">Yes</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="load-balancer">Load Balancer</label>
+            <select id="load-balancer">
+              <option value="no" selected>No</option>
+              <option value="yes">Yes</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="nat">Network Address Translation (NAT)</label>
+            <select id="nat">
+              <option value="no" selected>No</option>
+              <option value="yes">Yes</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="routing">Routing</label>
+            <select id="routing">
+              <option value="no" selected>No</option>
+              <option value="yes">Yes</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="bgp-routing">BGP Routing</label>
+            <select id="bgp-routing">
+              <option value="no" selected>No</option>
+              <option value="yes">Yes</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="firewall-rules">Firewall Rules</label>
+            <input type="text" id="firewall-rules" placeholder="Enter rules (comma-separated)" />
+          </div>
+          <div class="form-group">
+            <label for="l2vpn-network">L2 VPN</label>
+            <select id="l2vpn-network">
+              <option value="" selected>--Select--</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="ipv4-count-network">Number of IPv4 (instances)</label>
+            <input type="number" id="ipv4-count-network" min="0" placeholder="Enter Number of instances" />
+          </div>
+        </div>
+
+        <!-- ▶️ Managed Kubernetes Panel -->
+        <div class="panel" id="kubernetes-panel">
+          <h3><i class="fas fa-cubes"></i> Managed Kubernetes Service</h3>
+          <div class="form-group">
+            <label for="k8s-description">Description*</label>
+            <input type="text" id="k8s-description" placeholder="Enter a description for your estimate" />
+          </div>
+          <div class="form-group">
+            <label for="cluster-count">Number of Clusters*</label>
+            <input type="number" id="cluster-count" min="0" placeholder="Enter Number of Clusters" />
+          </div>
+          <div class="form-group">
+            <label for="k8s-region">Choose Region*</label>
+            <select id="k8s-region">
+              <option value="" selected>--Select Location--</option>
+              <option value="us-east-1">US East (N. Virginia)</option>
+              <option value="us-west-1">US West (Oregon)</option>
+              <option value="eu-central-1">EU (Frankfurt)</option>
+              <option value="ap-south-1">Asia Pacific (Mumbai)</option>
+              <option value="ap-southeast-1">Asia Pacific (Singapore)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- ▶️ DB as a Service Panel -->
+        <div class="panel" id="db-panel">
+          <h3><i class="fas fa-database"></i> DB as a Service</h3>
+          <div class="form-group">
+            <label for="db-list">Database List</label>
+            <select id="db-list">
+              <option value="" selected>--Select Database--</option>
+              <option value="mysql">MySQL</option>
+              <option value="postgres">PostgreSQL</option>
+              <option value="mongodb">MongoDB</option>
+              <option value="redis">Redis</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="db-nodes">Nodes (instances)</label>
+            <input type="number" id="db-nodes" min="0" placeholder="Enter Number of Nodes" />
+          </div>
+          <div class="form-group">
+            <label for="db-machine-type">Machine Type</label>
+            <select id="db-machine-type">
+              <option value="" selected>--Select MC Type--</option>
+              <option value="small">Small</option>
+              <option value="medium">Medium</option>
+              <option value="large">Large</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="db-storage-size">Storage Size</label>
+            <input type="number" id="db-storage-size" min="0" placeholder="Enter the size" />
+          </div>
+          <div class="form-group">
+            <label for="db-storage-unit">Choose Unit</label>
+            <select id="db-storage-unit">
+              <option value="GB" selected>GB</option>
+              <option value="TB">TB</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="db-pricing">Pricing</label>
+            <select id="db-pricing">
+              <option value="" selected>--Select Pricing--</option>
+              <option value="on-demand">On-Demand</option>
+              <option value="reserved">Reserved</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- ▶️ Firewall Panel -->
+        <div class="panel" id="firewall-panel">
+          <h3><i class="fas fa-shield-alt"></i> Firewall Configuration</h3>
+          <div class="form-group">
+            <label for="fw-instances">Enter Number of Instances</label>
+            <input type="number" id="fw-instances" min="0" placeholder="Enter Number of instances" />
+          </div>
+          <div class="form-group">
+            <label for="fw-waf">WAF (instances)</label>
+            <input type="number" id="fw-waf" min="0" placeholder="Enter Number of instances" />
+          </div>
+          <div class="form-group">
+            <label for="fw-ips">IPS/IDS (instances)</label>
+            <input type="number" id="fw-ips" min="0" placeholder="Enter Number of instances" />
+          </div>
+          <div class="form-group">
+            <label for="fw-ipsec">IPSec</label>
+            <select id="fw-ipsec">
+              <option value="no" selected>No</option>
+              <option value="yes">Yes</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="fw-sslvpn">SSL VPN</label>
+            <select id="fw-sslvpn">
+              <option value="no" selected>No</option>
+              <option value="yes">Yes</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="fw-l2vpn">L2 VPN</label>
+            <select id="fw-l2vpn">
+              <option value="no" selected>No</option>
+              <option value="yes">Yes</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="fw-ddos">DDoS</label>
+            <select id="fw-ddos">
+              <option value="no" selected>No</option>
+              <option value="yes">Yes</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="fw-iam">Identity and Access Management</label>
+            <select id="fw-iam">
+              <option value="" selected>--Select IAM--</option>
+              <option value="basic">Basic</option>
+              <option value="advanced">Advanced</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- ▶️ Metrics Panel -->
+        <div class="panel" id="metrics-panel">
+          <h3><i class="fas fa-chart-bar"></i> Metrics</h3>
+          <div class="form-group">
+            <label for="metrics-count">Number of Metrics*</label>
+            <input type="number" id="metrics-count" min="0" placeholder="Enter Number of Metrics" />
+          </div>
+        </div>
+
+        <!-- ▶️ API Panel -->
+        <div class="panel" id="api-panel">
+          <h3><i class="fas fa-code"></i> API Configuration</h3>
+          <div class="form-group">
+            <label for="api-metric-requests">Number of metric requests*</label>
+            <input type="number" id="api-metric-requests" min="0" placeholder="Enter Number of Metrics" />
+          </div>
+          <div class="form-group">
+            <label for="api-requested">Number of Requested*</label>
+            <input type="number" id="api-requested" min="0" placeholder="Enter Number of Metrics" />
+          </div>
+          <div class="form-group">
+            <label for="api-other-requests">Number of other API requests*</label>
+            <input type="number" id="api-other-requests" min="0" placeholder="Enter Number of Metrics" />
+          </div>
+        </div>
+
+        <!-- ▶️ Antivirus Panel -->
+        <div class="panel" id="antivirus-panel">
+          <h3><i class="fas fa-virus"></i> Antivirus Configuration</h3>
+          <div class="form-group">
+            <label for="av-enabled">Enable Antivirus</label>
+            <select id="av-enabled">
+              <option value="no" selected>No</option>
+              <option value="yes">Yes</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="av-instances">Number of Instances</label>
+            <input type="number" id="av-instances" min="0" placeholder="Enter Instances" />
+          </div>
+          <div class="form-group">
+            <label for="av-machine-family">Machine Family</label>
+            <select id="av-machine-family">
+              <option value="" selected>--Select Machine Family--</option>
+              <option value="general-purpose">General Purpose</option>
+              <option value="compute-optimized">Compute Optimized</option>
+              <option value="memory-optimized">Memory Optimized</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="av-machine-type">Machine Type</label>
+            <select id="av-machine-type">
+              <option value="" selected>--Select MC Type--</option>
+              <option value="small">Small</option>
+              <option value="medium">Medium</option>
+              <option value="large">Large</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="av-location">Data Center Location</label>
+            <select id="av-location">
+              <option value="" selected>--Select Location--</option>
+              <option value="us-east-1">US East (N. Virginia)</option>
+              <option value="us-west-1">US West (Oregon)</option>
+              <option value="eu-central-1">EU (Frankfurt)</option>
+              <option value="ap-south-1">Asia Pacific (Mumbai)</option>
+              <option value="ap-southeast-1">Asia Pacific (Singapore)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="av-ipv6">Number of IP (IPv6)</label>
+            <input type="number" id="av-ipv6" min="0" placeholder="Enter Number of Instances IP(IPv6)" />
+          </div>
+          <div class="form-group">
+            <label for="av-ipv4">Number of IP (IPv4)</label>
+            <input type="number" id="av-ipv4" min="0" placeholder="Enter Number of Instances IP(IPv4)" />
+          </div>
+        </div>
+
+        <!-- ▶️ Summary Panel -->
+        <div class="panel" id="summary-panel">
+          <h3><i class="fas fa-file-alt"></i> Configuration Summary</h3>
+          <div class="summary-card">
+            <div class="summary-item">
+              <span>Compute:</span>
+              <span id="summary-compute"></span>
+            </div>
+            <div class="summary-item">
+              <span>Storage:</span>
+              <span id="summary-storage"></span>
+            </div>
+            <div class="summary-item">
+              <span>Network:</span>
+              <span id="summary-network"></span>
+            </div>
+            <div class="summary-item">
+              <span>Managed Kubernetes:</span>
+              <span id="summary-kubernetes"></span>
+            </div>
+            <div class="summary-item">
+              <span>DB as a Service:</span>
+              <span id="summary-db"></span>
+            </div>
+            <div class="summary-item">
+              <span>Firewall:</span>
+              <span id="summary-firewall"></span>
+            </div>
+            <div class="summary-item">
+              <span>Metrics:</span>
+              <span id="summary-metrics"></span>
+            </div>
+            <div class="summary-item">
+              <span>API:</span>
+              <span id="summary-api"></span>
+            </div>
+            <div class="summary-item">
+              <span>Antivirus:</span>
+              <span id="summary-antivirus"></span>
+            </div>
+            <div class="summary-item total">
+              <span>Estimated Monthly Cost:</span>
+              <span id="summary-cost"></span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="user-email">Email Address</label>
+            <input type="email" id="user-email" placeholder="Enter your email to receive configuration" />
+          </div>
+          <div class="action-buttons">
+            <button id="save-config" class="btn btn-primary">
+              <i class="fas fa-envelope"></i> Email Configuration
+            </button>
+            <button id="export-config" class="btn btn-secondary">
+              <i class="fas fa-download"></i> Export as PDF
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cost Preview -->
+      <div class="cost-preview">
+        <div class="cost-card">
+          <h3>Cost Estimate</h3>
+          <div class="cost-breakdown">
+            <div class="cost-item">
+              <span>Compute</span>
+              <span id="cost-compute">$0.00</span>
+            </div>
+            <div class="cost-item">
+              <span>Storage</span>
+              <span id="cost-storage">$0.00</span>
+            </div>
+            <div class="cost-item total">
+              <span>Total Monthly</span>
+              <span id="cost-total">$0.00</span>
+            </div>
+          </div>
+          <div class="cost-actions">
+            <button id="refresh-cost" class="btn btn-small">
+              <i class="fas fa-sync-alt"></i> Refresh
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <a href="login.html">Login</a> | <a href="signup.html">Sign Up</a>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col footer-about">
+          <a href="index.html" class="footer-logo">
+            <img src="assets/icons/logo-white.svg" alt="Vensysco Cloud Logo" />
+            <span>Vensysco<span class="highlight">Cloud</span></span>
+          </a>
+          <p class="footer-about-text">Vensysco Cloud provides premium cloud hosting solutions with unmatched performance, security, and reliability.</p>
+          <div class="footer-social">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h3 class="footer-title">Services</h3>
+          <ul class="footer-links">
+            <li><a href="index.html#services">Cloud Hosting</a></li>
+            <li><a href="index.html#services">VPS Hosting</a></li>
+            <li><a href="index.html#services">Dedicated Servers</a></li>
+            <li><a href="index.html#services">Managed Cloud</a></li>
+            <li><a href="datacenter.html">Data Center</a></li>
+            <li><a href="cloud-services.html">Cloud Services</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3 class="footer-title">Company</h3>
+          <ul class="footer-links">
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Press</a></li>
+            <li><a href="#">Partners</a></li>
+            <li><a href="#">Contact Us</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3 class="footer-title">Support</h3>
+          <ul class="footer-links">
+            <li><a href="#">Knowledge Base</a></li>
+            <li><a href="#">Documentation</a></li>
+            <li><a href="#">Community Forums</a></li>
+            <li><a href="#">System Status</a></li>
+            <li><a href="#">Submit a Ticket</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3 class="footer-title">Contact</h3>
+          <ul class="footer-contact">
+            <li><i class="fas fa-map-marker-alt"></i> Bhutani AlphaThum Sector 90, Noida</li>
+            <li><i class="fas fa-phone"></i> 1122334455</li>
+            <li><i class="fas fa-envelope"></i> support@vensysco.com</li>
+          </ul>
+          <div class="footer-newsletter">
+            <h4>Subscribe to Newsletter</h4>
+            <form class="newsletter-form">
+              <input type="email" placeholder="Your email address" />
+              <button type="submit"><i class="fas fa-paper-plane"></i></button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-copyright">
+          &copy; 2023 Vensysco Cloud. All Rights Reserved.
+        </div>
+        <div class="footer-legal">
+          <a href="#">Terms of Service</a>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Cookie Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <a href="#" class="back-to-top">
+    <i class="fas fa-arrow-up"></i>
+  </a>
+
+  <!-- JavaScript -->
+  <script src="js/cloud-dashboard.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/animations.js"></script>
+  <script>
+    // Mobile nav toggle
+    document.querySelector('.mobile-menu-btn').addEventListener('click', () => {
+      document.querySelector('.nav-links').classList.toggle('active');
+    });
+  </script>
+</body>
+</html>
+<script src="js/animations.js"></script>
+
+
