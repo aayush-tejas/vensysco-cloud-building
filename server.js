@@ -26,12 +26,20 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static('.'));
 
 // MongoDB connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/vensysco-cloud', {
+if (!process.env.MONGODB_URI) {
+  console.error('MONGODB_URI environment variable is not set');
+  process.exit(1);
+}
+
+mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
 .then(() => console.log('MongoDB connected successfully'))
-.catch(err => console.error('MongoDB connection error:', err));
+.catch(err => {
+  console.error('MongoDB connection error:', err);
+  process.exit(1);
+});
 
 // Routes
 app.use('/api/auth', require('./routes/auth'));
