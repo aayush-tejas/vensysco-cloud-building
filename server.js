@@ -1,71 +1,99 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const path = require('path');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 require('dotenv').config();
+
+// ==========================================================
+// CHANGE 1: Import the authentication middleware
+// Make sure you have created the 'middleware/auth.js' file as described before.
+// ==========================================================
+const authMiddleware = require('./middleware/auth');
 
 const app = express();
 
-// Middleware
+// Security middleware
+app.use(helmet());
 app.use(cors());
-app.use(express.json());
-app.use(express.static('.'));
 
-// MongoDB connection with better error handling
-const connectDB = async () => {
-  try {
-    if (!process.env.MONGODB_URI) {
-      console.error('❌ MONGODB_URI is not defined in environment variables');
-      console.log('📝 Please set up your MongoDB Atlas connection string in the .env file');
-      process.exit(1);
-    }
+// Rate limiting
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+});
+app.use('/api/', limiter);
 
-    const conn = await mongoose.connect(process.env.MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      serverSelectionTimeoutMS: 30000,
-      socketTimeoutMS: 45000,
-    });
+// Body parsing middleware
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true }));
 
-    console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
-  } catch (error) {
-    console.error('❌ MongoDB connection error:', error.message);
-    console.log('📝 Make sure your MongoDB Atlas connection string is correct in the .env file');
-    process.exit(1);
-  }
-};
+// Serve static files from the root directory (e.g., css, js, assets)
+app.use(express.static(__dirname)); 
+// Serving static files from a 'public' folder is also a common and good practice.
+// If your css/js folders are in the root, the above line is correct.
 
-// Connect to MongoDB
-connectDB();
+// MongoDB connection
+mongoose
+  .connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/vensysco-cloud', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log('MongoDB connected successfully'))
+  .catch((err) => console.error('MongoDB connection error:', err));
 
-// Routes
+// API Routes
 app.use('/api/auth', require('./routes/auth'));
-app.use('/api/datacenters', require('./routes/datacenters'));
-app.use('/api/cloud-services', require('./routes/cloudServices'));
+// Note: Ensure your route files are in a 'routes' directory
+app.use('/api/cloud-services', require('./routes/cloudServices')); 
 
-// Serve static files
+// Serve HTML Pages
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+  res.sendFile(__dirname + '/index.html');
 });
 
+// Unprotected pages like login and signup are served directly
 app.get('/login', (req, res) => {
-  res.sendFile(path.join(__dirname, 'login.html'));
+  res.sendFile(__dirname + '/login.html');
 });
 
 app.get('/signup', (req, res) => {
-  res.sendFile(path.join(__dirname, 'signup.html'));
+  res.sendFile(__dirname + '/signup.html');
 });
 
-app.get('/datacenter', (req, res) => {
-  res.sendFile(path.join(__dirname, 'datacenter.html'));
+
+// ==========================================================
+// CHANGE 2: Protect the datacenter and cloud-services routes
+// We add 'authMiddleware' before the function that sends the file.
+// Express will run our middleware first. If the user is not logged in,
+// the middleware will redirect them to the login page.
+// ==========================================================
+app.get('/datacenter', authMiddleware, (req, res) => {
+  res.sendFile(__dirname + '/datacenter.html');
 });
 
-app.get('/cloud-services', (req, res) => {
-  res.sendFile(path.join(__dirname, 'cloud-services.html'));
+app.get('/cloud-services', authMiddleware, (req, res) => {
+  res.sendFile(__dirname + '/cloud-services.html');
 });
+
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({
+    success: false,
+    message: 'Something went wrong!',
+    error: process.env.NODE_ENV === 'development' ? err.message : 'Internal server error',
+  });
+});
+
+// 404 Not Found Handler
+app.use((req, res, next) => {
+  res.status(404).sendFile(__dirname + '/404.html'); // Optional: create a 404.html page
+});
+
 
 const PORT = process.env.PORT || 3000;
-
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
