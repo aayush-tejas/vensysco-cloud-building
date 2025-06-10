@@ -1,92 +1,69 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
+const path = require('path');
 require('dotenv').config();
 
 const app = express();
 
-// Security middleware
-app.use(helmet());
+// Middleware
 app.use(cors());
-
-// Rate limiting
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100 // limit each IP to 100 requests per windowMs
-});
-app.use('/api/', limiter);
-
-// Body parsing middleware
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true }));
-
-// Serve static files
+app.use(express.json());
 app.use(express.static('.'));
 
-// MongoDB connection
-if (!process.env.MONGODB_URI) {
-  console.error('MONGODB_URI environment variable is not set');
-  process.exit(1);
-}
+// MongoDB connection with better error handling
+const connectDB = async () => {
+  try {
+    if (!process.env.MONGODB_URI) {
+      console.error('❌ MONGODB_URI is not defined in environment variables');
+      console.log('📝 Please set up your MongoDB Atlas connection string in the .env file');
+      process.exit(1);
+    }
 
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log('MongoDB connected successfully'))
-.catch(err => {
-  console.error('MongoDB connection error:', err);
-  process.exit(1);
-});
+    const conn = await mongoose.connect(process.env.MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+
+    console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
+  } catch (error) {
+    console.error('❌ MongoDB connection error:', error.message);
+    console.log('📝 Make sure your MongoDB Atlas connection string is correct in the .env file');
+    process.exit(1);
+  }
+};
+
+// Connect to MongoDB
+connectDB();
 
 // Routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/datacenters', require('./routes/datacenters'));
 app.use('/api/cloud-services', require('./routes/cloudServices'));
 
-// Serve HTML files
+// Serve static files
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/index.html');
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 app.get('/login', (req, res) => {
-  res.sendFile(__dirname + '/login.html');
+  res.sendFile(path.join(__dirname, 'login.html'));
 });
 
 app.get('/signup', (req, res) => {
-  res.sendFile(__dirname + '/signup.html');
+  res.sendFile(path.join(__dirname, 'signup.html'));
 });
 
 app.get('/datacenter', (req, res) => {
-  res.sendFile(__dirname + '/datacenter.html');
+  res.sendFile(path.join(__dirname, 'datacenter.html'));
 });
 
 app.get('/cloud-services', (req, res) => {
-  res.sendFile(__dirname + '/cloud-services.html');
-});
-
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ 
-    success: false, 
-    message: 'Something went wrong!',
-    error: process.env.NODE_ENV === 'development' ? err.message : 'Internal server error'
-  });
-});
-
-// 404 handler
-app.use((req, res) => {
-  res.status(404).json({ 
-    success: false, 
-    message: 'Route not found' 
-  });
+  res.sendFile(path.join(__dirname, 'cloud-services.html'));
 });
 
 const PORT = process.env.PORT || 3000;
+
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-  console.log(`Visit: http://localhost:${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
