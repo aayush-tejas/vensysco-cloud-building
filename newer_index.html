@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vensysco Cloud - Redesigned Preview</title>
+    <meta name="description" content="Vensysco Cloud offers scalable, secure, and high-performance cloud hosting solutions for businesses of all sizes." />
+
+    <!-- External Libraries -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet" />
+
+    <style>
+        /* --- NEW & IMPROVED DESIGN SYSTEM --- */
+        :root {
+            /* Updated tech-focused color palette inspired by the logo */
+            --primary-color: #00204A; /* Deep Blue from Logo */
+            --primary-dark: #001530; /* Darker shade of blue for accents/hover */
+            --secondary-color: #FF5722; /* Vibrant Orange from Logo */
+            --dark-color: #1a1a1a; /* Adjusted for overall darkness */
+            --body-color: #334155; /* Slate 700 - keeping for text readability */
+            --light-color: #f8fafc; /* Slate 50 */
+            --gray-color: #94a3b8; /* Slate 400 */
+            --border-color: #e2e8f0; /* Slate 200 */
+
+            /* Effects */
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1);
+            --shadow-glow: 0 0 20px rgba(0, 32, 74, 0.5); /* Adjusted to new primary color */
+            --border-radius-md: 8px;
+            --border-radius-lg: 16px;
+            --gradient-main: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+
+            /* Fonts */
+            --font-primary: 'Poppins', sans-serif;
+            --font-secondary: 'Montserrat', sans-serif;
+        }
+
+        /* Basic Reset */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font-primary);
+            line-height: 1.6;
+            background-color: var(--light-color);
+            color: var(--body-color);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Container */
+        .container { width: 90%; max-width: 1200px; margin: 0 auto; }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 14px 32px;
+            border-radius: var(--border-radius-md);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+            box-shadow: var(--shadow-md);
+        }
+        .btn-primary {
+            background: var(--gradient-main);
+            color: white;
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+        .btn-secondary {
+            background-color: var(--dark-color);
+            color: white;
+        }
+        .btn-secondary:hover {
+            background-color: #000;
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group textarea,
+        .form-group select,
+        .form-group input[type="number"] { /* Added number type */
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-md);
+            font-family: var(--font-primary);
+            font-size: 1rem;
+            color: var(--body-color);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .form-group input[type="text"]:focus,
+        .form-group input[type="email"]:focus,
+        .form-group textarea:focus,
+        .form-group select:focus,
+        .form-group input[type="number"]:focus { /* Added number type */
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 32, 74, 0.2); /* Adjusted to new primary color */
+        }
+        .form-card {
+            background: white;
+            padding: 40px;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            max-width: 600px;
+            margin: 40px auto;
+        }
+        /* Style for dynamic fields container */
+        #dynamic-fields {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px dashed var(--border-color);
+        }
+
+
+        /* Messages/Modals */
+        .message-box {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: var(--dark-color);
+            color: white;
+            padding: 20px 30px;
+            border-radius: var(--border-radius-md);
+            box-shadow: var(--shadow-lg);
+            z-index: 10000;
+            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .message-box.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .message-box button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: var(--border-radius-md);
+            margin-top: 15px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+        .message-box button:hover {
+            background-color: var(--primary-dark);
+        }
+
+        /* Loading Spinner */
+        #loading-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+            z-index: 9998; /* Below message box, above content */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        #loading-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: var(--primary-color);
+            animation: spin 1s ease infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* --- HOME PAGE STYLES --- */
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px 0;
+            z-index: 1000;
+            transition: background-color 0.4s ease, box-shadow 0.4s ease, padding 0.4s ease;
+        }
+        .header.scrolled {
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-md);
+            padding: 10px 0;
+        }
+        .main-nav { display: flex; justify-content: space-between; align-items: center; }
+        .logo img { height: 50px; transition: height 0.4s ease; }
+        .header.scrolled .logo img { height: 40px; }
+        .nav-links { display: flex; list-style: none; gap: 35px; }
+        .nav-links a {
+            color: var(--dark-color);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            padding-bottom: 5px;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-image: var(--gradient-main);
+            transition: width 0.3s ease;
+        }
+        .nav-links a:hover::after { width: 100%; }
+        .mobile-menu-btn { display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--dark-color); }
+
+        /* New Dynamic Hero Section */
+        .hero-section {
+            background-color: #eef2ff; /* Light background, potentially adjust based on logo */
+            position: relative;
+            padding: 180px 0 120px;
+            text-align: center;
+            overflow: hidden;
+            /* Adjust background-image for dots to use new primary color if applicable */
+            background-image: radial-gradient(circle, rgba(0, 32, 74, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            animation: move-dots 20s linear infinite;
+        }
+        @keyframes move-dots { from { transform: translate(0, 0); } to { transform: translate(-20px, -20px); } }
+        
+        .hero-content { position: relative; z-index: 2; }
+        .hero-content h1 {
+            font-size: 3.8rem;
+            font-family: var(--font-secondary);
+            color: var(--dark-color);
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        .hero-content p { font-size: 1.2rem; color: var(--body-color); max-width: 600px; margin: 0 auto 30px; }
+
+        /* Redesigned Services Section */
+        .services-section { padding: 100px 0; background-color: var(--light-color); }
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-header h2 { font-size: 2.8rem; color: var(--dark-color); margin-bottom: 15px; font-family: var(--font-secondary); }
+        .section-header p { font-size: 1.1rem; color: var(--body-color); max-width: 600px; margin: auto; }
+        
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; }
+        .service-card {
+            background: white;
+            padding: 40px;
+            border-radius: var(--border-radius-lg);
+            text-align: center;
+            border: 2px solid var(--border-color);
+            transition: all 0.4s ease;
+        }
+        .service-card:hover {
+            transform: translateY(-12px);
+            box-shadow: var(--shadow-lg);
+            border-image: var(--gradient-main) 1;
+        }
+        .service-icon {
+            font-size: 3.5rem;
+            margin-bottom: 25px;
+            display: inline-block;
+            background-image: var(--gradient-main);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .service-card h3 { font-size: 1.6rem; margin-bottom: 15px; color: var(--dark-color); }
+        .service-card p { color: var(--body-color); line-height: 1.7; margin-bottom: 30px; }
+        a.learn-more {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+        a.learn-more:hover { color: var(--primary-dark); }
+        a.learn-more i { margin-left: 5px; transition: transform 0.3s ease; }
+        a.learn-more:hover i { transform: translateX(5px); }
+        .dashboard-cta { text-align: center; margin-top: 60px; }
+
+        /* --- NEW DASHBOARD LAYOUT & STYLES --- */
+        .dashboard-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+        /* New Sidebar */
+        .dashboard-sidebar {
+            width: 260px;
+            background: var(--dark-color);
+            color: var(--light-color);
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+        .sidebar-logo {
+            padding-bottom: 30px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #475569;
+        }
+        .sidebar-logo img { 
+            height: 40px; 
+            max-width: 100%; /* Ensure logo fits within the container */
+            object-fit: contain; /* Maintain aspect ratio */
+        }
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: var(--gray-color);
+            text-decoration: none;
+            padding: 15px;
+            border-radius: var(--border-radius-md);
+            margin-bottom: 10px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .sidebar-nav a:hover, .sidebar-nav a.active {
+            background-color: var(--primary-dark);
+            color: white;
+        }
+        .sidebar-nav a i { width: 20px; text-align: center; }
+
+        /* Dashboard Main Content */
+        .dashboard-main {
+            flex-grow: 1;
+            padding: 40px;
+            background-color: #f1f5f9;
+        }
+        .dashboard-header { margin-bottom: 40px; }
+        .dashboard-header h1 { font-size: 2.2rem; color: var(--dark-color); }
+        .dashboard-main .section-header {
+            text-align: left;
+            margin-bottom: 30px;
+        }
+        .dashboard-main .section-header h2 {
+            font-size: 2.2rem;
+            border-bottom: none;
+        }
+        .dashboard-main .section-header p {
+            max-width: none;
+            margin: 0;
+            color: var(--gray-color);
+        }
+        .service-category h2 {
+            font-size: 1.8rem;
+            color: var(--dark-color);
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid;
+            border-image: var(--gradient-main) 1;
+            display: inline-block;
+        }
+        .dashboard-main .service-grid {
+             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+             gap: 25px;
+        }
+        .service-item {
+            background: white;
+            border-radius: var(--border-radius-lg);
+            padding: 30px;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+        }
+        .service-item:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); }
+        .service-logo { height: 50px; margin-bottom: 20px; object-fit: contain; align-self: center; }
+        .service-item h3 { font-size: 1.3rem; color: var(--dark-color); margin-bottom: 10px; }
+        .service-item p { color: var(--body-color); line-height: 1.6; margin-bottom: 10px; flex-grow: 1; }
+        .service-item .custom-field-display {
+            font-size: 0.9rem;
+            color: var(--gray-color);
+            margin-bottom: 5px;
+            text-align: left;
+            padding-left: 5px;
+        }
+        .service-item .custom-field-display strong {
+            color: var(--body-color);
+        }
+        .divider { height: 1px; background-color: var(--border-color); margin: 60px 0; }
+
+        /* User ID Display */
+        .user-id-display {
+            background-color: var(--dark-color);
+            color: var(--light-color);
+            padding: 15px 20px;
+            border-radius: var(--border-radius-md);
+            margin-top: 30px;
+            font-family: monospace;
+            word-break: break-all;
+            font-size: 0.9em;
+        }
+        .user-id-display strong {
+            color: var(--primary-color);
+        }
+
+
+        /* --- UTILITIES & ANIMATIONS --- */
+        .page { display: none; }
+        .page.active { display: block; }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links, .auth-buttons { display: none; flex-direction: column; width: 100%; text-align: center; background-color: white; position: absolute; top: 70px; left: 0; padding: 20px 0; box-shadow: var(--shadow-lg); }
+            .nav-links { gap: 20px; }
+            .auth-buttons { top: 250px; }
+            .nav-links.active, .auth-buttons.active { display: flex; }
+            .mobile-menu-btn { display: block; z-index: 1001; }
+            .hero-content h1 { font-size: 2.5rem; }
+            .dashboard-layout { flex-direction: column; }
+            .dashboard-sidebar { width: 100%; height: auto; padding-bottom: 10px; }
+            .sidebar-logo { padding-bottom: 15px; margin-bottom: 15px; text-align: center;}
+            .dashboard-main { padding: 20px; }
+            .dashboard-main .section-header h2 { font-size: 1.8rem; }
+            .service-category h2 { font-size: 1.6rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Custom Message Box -->
+    <div id="message-box" class="message-box">
+        <p id="message-text"></p>
+        <button id="message-ok-btn">OK</button>
+    </div>
+    <!-- Loading overlay -->
+    <div id="loading-overlay" class="message-box">
+        <div class="loading-spinner"><div class="spinner"></div></div>
+        <p>Loading...</p>
+    </div>
+
+    <!-- Home Page Content -->
+    <div id="home-page" class="page">
+        <header class="header">
+            <div class="container">
+                <nav class="main-nav">
+                    <a href="#home" class="logo nav-link">
+                        <!-- Replaced placeholder with actual logo -->
+                        <img src="logo.JPG" alt="Vensysco Logo" onerror="this.onerror=null;this.src='https://placehold.co/200x50/00204A/ffffff?text=Vensysco&font=montserrat';">
+                    </a>
+                    <ul class="nav-links">
+                        <li><a href="#features" class="nav-link">Features</a></li>
+                        <li><a href="#services-home" class="nav-link">Our Services</a></li>
+                    </ul>
+                    <div class="auth-buttons">
+                        <a href="#dashboard" class="btn btn-primary nav-link">Launch Dashboard</a>
+                    </div>
+                    <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+                </nav>
+            </div>
+        </header>
+
+        <main>
+            <section id="hero" class="hero-section">
+                <div class="container">
+                    <div class="hero-content">
+                        <h1 data-animation="fadeInUp">Next-Gen Cloud Solutions</h1>
+                        <p data-animation="fadeInUp" data-delay="200">Power your business with scalable, secure, and intelligent cloud infrastructure.</p>
+                        <a href="#dashboard" class="btn btn-primary nav-link" data-animation="fadeInUp" data-delay="400">Get Started Free</a>
+                    </div>
+                </div>
+            </section>
+
+            <section id="services-home" class="services-section">
+                <div class="container">
+                    <div class="section-header">
+                        <h2 data-animation="fadeInUp">A Hybrid Cloud for Modern Demands</h2>
+                        <p data-animation="fadeInUp" data-delay="100">Combine the raw power of hyperscalers with the stability of traditional IaaS, all managed through a single pane of glass.</p>
+                    </div>
+                    <div class="services-grid">
+                        <div class="service-card" data-animation="fadeInUp" data-delay="200">
+                            <div class="service-icon"><i class="fas fa-cubes-stacked"></i></div>
+                            <h3>Hyperscaler Platforms</h3>
+                            <p>Managed AWS, Azure, and Oracle Cloud services, optimized for performance, security, and cost-efficiency.</p>
+                            <a href="#hyperscaler-section" class="learn-more nav-link">Explore Hyperscalers <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                        <div class="service-card" data-animation="fadeInUp" data-delay="400">
+                            <div class="service-icon"><i class="fas fa-database"></i></div>
+                            <h3>Traditional IaaS</h3>
+                            <p>Robust and reliable Infrastructure-as-a-Service from trusted partners like Yotta and Sify for your mission-critical workloads.</p>
+                            <a href="#iaas-section" class="learn-more nav-link">Explore IaaS <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="dashboard-cta" data-animation="fadeInUp" data-delay="500">
+                        <a href="#dashboard" class="btn btn-secondary nav-link">View Full Service Dashboard</a>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Dashboard Page Content -->
+    <div id="dashboard-page" class="page">
+        <div class="dashboard-layout">
+            <!-- Sidebar Navigation -->
+            <aside class="dashboard-sidebar">
+                <div class="sidebar-logo">
+                    <a href="#home" class="nav-link">
+                        <!-- Replaced placeholder with actual logo -->
+                        <img src="logo.JPG" alt="Vensysco Logo" onerror="this.onerror=null;this.src='https://placehold.co/200x50/00204A/ffffff?text=Vensysco&font=montserrat';">
+                    </a>
+                </div>
+                <nav class="sidebar-nav">
+                    <a href="#home" class="nav-link"><i class="fas fa-arrow-left"></i> Back to Home</a>
+                    <a href="#dashboard" class="sidebar-link active" data-target="overview-section"><i class="fas fa-tachometer-alt"></i> Overview</a>
+                    <a href="#profile-page" class="sidebar-link" data-target="profile-section"><i class="fas fa-user-circle"></i> My Profile</a>
+                    <a href="#component-generator-page" class="sidebar-link" data-target="generate-component-section"><i class="fas fa-plus-circle"></i> Create Service</a>
+                    <a href="#hyperscaler-dashboard" class="sidebar-link" data-target="hyperscaler-section"><i class="fas fa-cubes-stacked"></i> Hyperscalers</a>
+                    <a href="#iaas-dashboard" class="sidebar-link" data-target="iaas-section"><i class="fas fa-database"></i> Traditional IaaS</a>
+                </nav>
+                <div class="user-id-display">
+                    <strong>User ID:</strong> <span id="display-user-id">Loading...</span>
+                </div>
+            </aside>
+            <!-- Main Content Area -->
+            <main class="dashboard-main">
+                <div id="overview-section" class="dashboard-content-section active">
+                    <div class="dashboard-header">
+                        <h1>Cloud Services Dashboard</h1>
+                        <p class="text-slate-500">Welcome to your Vensysco Cloud console. Manage your services efficiently.</p>
+                    </div>
+
+                    <section id="user-generated-services-section">
+                        <h2>Your Provisioned Services</h2>
+                        <div class="service-grid" id="user-services-grid">
+                            <!-- User-generated services will be loaded here -->
+                            <p class="text-slate-500" id="no-services-message">No services provisioned yet. Go to 'Create Service' to add new services.</p>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- My Profile Section -->
+                <div id="profile-section" class="dashboard-content-section">
+                    <div class="section-header">
+                        <h2>My Profile</h2>
+                        <p>Update your personal information.</p>
+                    </div>
+                    <div class="form-card">
+                        <form id="profile-form">
+                            <div class="form-group">
+                                <label for="profile-name">Name:</label>
+                                <input type="text" id="profile-name" placeholder="Your Name" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="profile-email">Email:</label>
+                                <input type="email" id="profile-email" placeholder="your.email@example.com" readonly />
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save Profile</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Component Generator Section -->
+                <div id="generate-component-section" class="dashboard-content-section">
+                    <div class="section-header">
+                        <h2>Create New Cloud Service</h2>
+                        <p>Define and provision your custom cloud services.</p>
+                    </div>
+                    <div class="form-card">
+                        <form id="create-service-form">
+                            <div class="form-group">
+                                <label for="service-name">Service Name:</label>
+                                <input type="text" id="service-name" placeholder="e.g., My Web Server" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="service-description">Description:</label>
+                                <textarea id="service-description" rows="4" placeholder="Briefly describe your service..." required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="cloud-provider">Cloud Provider:</label>
+                                <select id="cloud-provider" required>
+                                    <option value="">Select Provider</option>
+                                    <option value="AWS">AWS</option>
+                                    <option value="Azure">Azure</option>
+                                    <option value="Oracle">Oracle Cloud</option>
+                                    <option value="Yotta">Yotta Infrastructure</option>
+                                    <option value="Sify">Sify Technologies</option>
+                                    <option value="Custom">Other / Custom</option>
+                                </select>
+                            </div>
+                            <!-- Dynamic fields will be injected here -->
+                            <div id="dynamic-fields"></div>
+
+                            <div class="form-group">
+                                <label for="service-type">Service Type:</label>
+                                <select id="service-type" required>
+                                    <option value="">Select a type</option>
+                                    <option value="Virtual Machine">Virtual Machine</option>
+                                    <option value="Database">Database</option>
+                                    <option value="Storage">Object Storage</option>
+                                    <option value="Network">Virtual Network</option>
+                                    <option value="Container">Container Service</option>
+                                    <option value="AI/ML">AI/ML Service</option>
+                                    <option value="Custom">Custom Application</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Provision Service</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Existing Hyperscaler Dashboard Content -->
+                <section id="hyperscaler-section" class="dashboard-content-section">
+                    <div class="section-header">
+                        <h2>Hyperscaler Platforms</h2>
+                        <p>Access and manage your services on major public clouds.</p>
+                    </div>
+                    <div class="service-grid">
+                        <div class="service-item">
+                            <img src="https://placehold.co/150x50/232F3E/ffffff?text=AWS" alt="AWS Logo" class="service-logo">
+                            <h3>Amazon Web Services</h3>
+                            <p>Industry-leading services for computing, storage, and databases.</p>
+                            <a href="#" class="btn btn-primary">Manage AWS</a>
+                        </div>
+                        <div class="service-item">
+                            <img src="https://placehold.co/150x50/0078D4/ffffff?text=Azure" alt="Azure Logo" class="service-logo">
+                            <h3>Microsoft Azure</h3>
+                            <p>Build, deploy, and manage applications across a global network.</p>
+                            <a href="#" class="btn btn-primary">Manage Azure</a>
+                        </div>
+                        <div class="service-item">
+                            <img src="https://placehold.co/150x50/F80000/ffffff?text=Oracle" alt="Oracle Logo" class="service-logo">
+                            <h3>Oracle Cloud</h3>
+                            <p>Enterprise-grade cloud for your most demanding workloads.</p>
+                            <a href="#" class="btn btn-primary">Manage Oracle</a>
+                        </div>
+                    </div>
+                </section>
+                <div class="divider"></div>
+                <!-- Existing IaaS Dashboard Content -->
+                <section id="iaas-section" class="dashboard-content-section">
+                    <div class="section-header">
+                        <h2>Traditional IaaS</h2>
+                        <p>Robust and reliable Infrastructure-as-a-Service from trusted partners.</p>
+                    </div>
+                    <div class="service-grid">
+                        <div class="service-item">
+                            <img src="https://placehold.co/150x50/00AEEF/ffffff?text=Yotta" alt="Yotta Logo" class="service-logo">
+                            <h3>Yotta Infrastructure</h3>
+                            <p>Scalable and secure datacenter services based in India.</p>
+                            <a href="#" class="btn btn-secondary">Manage Yotta</a>
+                        </div>
+                        <div class="service-item">
+                            <img src="https://placehold.co/150x50/FF6600/ffffff?text=Sify" alt="Sify Logo" class="service-logo">
+                            <h3>Sify Technologies</h3>
+                            <p>Comprehensive ICT solutions including cloud and network services.</p>
+                            <a href="#" class="btn btn-secondary">Manage Sify</a>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script type="module">
+        // Firebase imports
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, collection, onSnapshot, addDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Global Firebase variables (provided by Canvas environment)
+        // FOR LOCAL VS CODE TESTING: Replace these with your actual Firebase project config if you have one,
+        // otherwise, use these placeholders for anonymous sign-in and a default app ID.
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'vensysco-default-app'; // Placeholder ID
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
+            apiKey: "YOUR_FIREBASE_API_KEY", // Replace with your Firebase API Key
+            authDomain: "YOUR_FIREBASE_PROJECT_ID.firebaseapp.com", // Replace with your Auth Domain
+            projectId: "YOUR_FIREBASE_PROJECT_ID", // Replace with your Project ID
+            storageBucket: "YOUR_FIREBASE_PROJECT_ID.appspot.com", // Replace with your Storage Bucket
+            messagingSenderId: "YOUR_FIREBASE_MESSAGING_SENDER_ID", // Replace with your Messaging Sender ID
+            appId: "YOUR_FIREBASE_APP_ID" // Replace with your Firebase App ID
+        };
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        let app, db, auth, currentUserId;
+        let userProfileRef, userServicesCollectionRef; // Declare refs here
+
+        // Promise to ensure Firebase Auth is ready before Firestore operations
+        let authReadyPromise = new Promise(resolve => {
+            // Initialize Firebase app and auth instance as soon as possible
+            app = initializeApp(firebaseConfig);
+            auth = getAuth(app);
+            db = getFirestore(app);
+
+            // Listen for authentication state changes
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    currentUserId = user.uid;
+                    document.getElementById('display-user-id').textContent = currentUserId;
+                    // Initialize Firestore refs after currentUserId is known
+                    userProfileRef = doc(db, 'artifacts', appId, 'users', currentUserId, 'profile', 'user_data');
+                    userServicesCollectionRef = collection(db, 'artifacts', appId, 'users', currentUserId, 'services');
+                    resolve();
+                } else {
+                    // If no user is logged in, try anonymous sign-in
+                    try {
+                        const userCredential = await signInAnonymously(auth);
+                        currentUserId = userCredential.user.uid;
+                        document.getElementById('display-user-id').textContent = currentUserId;
+                        // Initialize Firestore refs after currentUserId is known
+                        userProfileRef = doc(db, 'artifacts', appId, 'users', currentUserId, 'profile', 'user_data');
+                        userServicesCollectionRef = collection(db, 'artifacts', appId, 'users', currentUserId, 'services');
+                        resolve();
+                    } catch (error) {
+                        console.error("Anonymous sign-in failed:", error);
+                        showMessage("Authentication failed. Please refresh the page.");
+                        // Resolve even on error to unblock page script execution
+                        // though Firestore operations requiring auth will fail.
+                        resolve(); 
+                    }
+                }
+            });
+        });
+
+        // --- Utility Functions for UI Feedback ---
+        /**
+         * Displays a custom message box to the user.
+         * @param {string} text The message to display.
+         * @param {function} [callback] An optional callback function to execute when the message box is closed.
+         */
+        function showMessage(text, callback) {
+            const msgBox = document.getElementById('message-box');
+            const msgText = document.getElementById('message-text');
+            const msgOkBtn = document.getElementById('message-ok-btn');
+
+            msgText.textContent = text;
+            msgBox.classList.add('show');
+
+            const handleClose = () => {
+                msgBox.classList.remove('show');
+                msgOkBtn.removeEventListener('click', handleClose); // Clean up listener
+                if (callback) callback();
+            };
+            msgOkBtn.addEventListener('click', handleClose);
+        }
+
+        /**
+         * Shows the global loading spinner overlay.
+         */
+        function showLoading() {
+            document.getElementById('loading-overlay').classList.add('show');
+        }
+
+        /**
+         * Hides the global loading spinner overlay.
+         */
+        function hideLoading() {
+            document.getElementById('loading-overlay').classList.remove('show');
+        }
+
+        // --- Firebase Backend Logic Functions (Moved outside DOMContentLoaded and if(currentUserId) block) ---
+        const profileForm = document.getElementById('profile-form');
+        const profileNameInput = document.getElementById('profile-name');
+        const profileEmailInput = document.getElementById('profile-email');
+        const userServicesGrid = document.getElementById('user-services-grid');
+        const noServicesMessage = document.getElementById('no-services-message');
+
+        /**
+         * Loads the user's profile data from Firestore and populates the profile form.
+         */
+        async function loadUserProfile() {
+            await authReadyPromise; // Ensure Firebase is ready
+            showLoading();
+            try {
+                if (!userProfileRef) { // Check if ref is initialized
+                    console.warn("userProfileRef not initialized, skipping profile load.");
+                    return;
+                }
+                const docSnap = await getDoc(userProfileRef);
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    profileNameInput.value = data.name || '';
+                    profileEmailInput.value = data.email || auth.currentUser?.email || 'N/A';
+                } else {
+                    profileNameInput.value = '';
+                    profileEmailInput.value = auth.currentUser?.email || 'N/A';
+                    console.log("No profile data found for this user.");
+                }
+            } catch (e) {
+                console.error("Error loading profile:", e);
+                showMessage("Failed to load profile. Please try again.");
+            } finally {
+                hideLoading();
+            }
+        }
+
+        /**
+         * Sets up a real-time listener for the user's services in Firestore
+         * and dynamically updates the dashboard display.
+         */
+        async function setupUserServicesListener() {
+            await authReadyPromise; // Ensure Firebase is ready
+            if (!userServicesCollectionRef) { // Check if ref is initialized
+                console.warn("userServicesCollectionRef not initialized, skipping services listener setup.");
+                return;
+            }
+            onSnapshot(userServicesCollectionRef, (snapshot) => {
+                userServicesGrid.innerHTML = ''; // Clear existing services before rendering new ones
+                if (snapshot.empty) {
+                    noServicesMessage.style.display = 'block'; // Show message if no services
+                } else {
+                    noServicesMessage.style.display = 'none'; // Hide message if services exist
+                    snapshot.forEach(doc => {
+                        const service = doc.data();
+                        const serviceId = doc.id;
+                        const serviceItem = document.createElement('div');
+                        serviceItem.classList.add('service-item');
+                        
+                        const logoText = service.provider ? encodeURIComponent(service.provider.split(' ')[0]) : (service.type ? encodeURIComponent(service.type.split(' ')[0]) : 'Service');
+                        
+                        let customFieldsHtml = '';
+                        if (service.customFields) {
+                            for (const key in service.customFields) {
+                                if (service.customFields.hasOwnProperty(key) && service.customFields[key]) {
+                                    let displayKey = key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+                                    if (displayKey.includes('Gb')) displayKey = displayKey.replace('Gb', 'GB');
+                                    customFieldsHtml += `<p class="custom-field-display"><strong>${displayKey}:</strong> ${service.customFields[key]}</p>`;
+                                }
+                            }
+                        }
+
+                        serviceItem.innerHTML = `
+                            <img src="https://placehold.co/150x50/cccccc/333333?text=${logoText}" alt="${service.provider || service.type} Logo" class="service-logo" onerror="this.onerror=null;this.src='https://placehold.co/150x50/cccccc/333333?text=Service';">
+                            <h3>${service.name}</h3>
+                            <p>${service.description}</p>
+                            <p><strong>Provider:</strong> ${service.provider || 'N/A'}</p>
+                            <p><strong>Type:</strong> ${service.type || 'N/A'}</p>
+                            ${customFieldsHtml}
+                            <button class="btn btn-primary delete-service-btn" data-id="${serviceId}">Delete Service</button>
+                        `;
+                        userServicesGrid.appendChild(serviceItem);
+                    });
+
+                    userServicesGrid.querySelectorAll('.delete-service-btn').forEach(button => {
+                        button.addEventListener('click', async (e) => {
+                            const serviceId = e.target.dataset.id;
+                            showLoading();
+                            try {
+                                if (!userServicesCollectionRef) { // Check if ref is initialized
+                                    console.warn("userServicesCollectionRef not initialized, skipping delete.");
+                                    return;
+                                }
+                                await deleteDoc(doc(db, 'artifacts', appId, 'users', currentUserId, 'services', serviceId));
+                                showMessage("Service deleted successfully!");
+                            } catch (e) {
+                                console.error("Error deleting service:", e);
+                                showMessage("Failed to delete service. Please try again.");
+                            } finally {
+                                hideLoading();
+                            }
+                        });
+                    });
+                }
+            }, (error) => {
+                console.error("Error getting real-time services:", error);
+                showMessage("Error loading your services. Please refresh the page.");
+            });
+        }
+
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            showLoading();
+            await authReadyPromise; // Wait for Firebase Auth to be ready
+            hideLoading();
+
+            // Setup real-time listener for services after auth is ready
+            setupUserServicesListener();
+
+            // --- Page Navigation Logic ---
+            const pages = document.querySelectorAll('.page');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sidebarLinks = document.querySelectorAll('.sidebar-link');
+            const dashboardSections = document.querySelectorAll('.dashboard-content-section');
+
+            function handlePageSwitch(hash) {
+                const targetPageId = (hash.startsWith('#dashboard') || hash.startsWith('#profile-page') || hash.startsWith('#component-generator-page') || hash.startsWith('#hyperscaler-section') || hash.startsWith('#iaas-section')) ? 'dashboard-page' : 'home-page';
+
+                pages.forEach(page => {
+                    page.classList.toggle('active', page.id === targetPageId);
+                });
+                window.scrollTo(0, 0);
+
+                if (targetPageId === 'dashboard-page') {
+                    let sectionToActivate = 'overview-section';
+                    if (hash === '#profile-page') {
+                        sectionToActivate = 'profile-section';
+                        loadUserProfile(); // Call loadUserProfile when profile section is activated
+                    }
+                    else if (hash === '#component-generator-page') sectionToActivate = 'generate-component-section';
+                    else if (hash === '#hyperscaler-dashboard' || hash === '#hyperscaler-section') sectionToActivate = 'hyperscaler-section';
+                    else if (hash === '#iaas-dashboard' || hash === '#iaas-section') sectionToActivate = 'iaas-section';
+                    
+                    dashboardSections.forEach(section => {
+                        section.classList.toggle('active', section.id === sectionToActivate);
+                    });
+
+                    sidebarLinks.forEach(link => {
+                        const target = link.getAttribute('data-target');
+                        const isActive = (target === sectionToActivate);
+                        link.classList.toggle('active', isActive);
+                    });
+                } else {
+                     dashboardSections.forEach(section => section.classList.remove('active'));
+                }
+            }
+
+            handlePageSwitch(window.location.hash || '#home');
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    if (href.startsWith('#')) {
+                        e.preventDefault();
+                        window.location.hash = href;
+                    }
+                    if (mainNavLinks.classList.contains('active')) {
+                        mainNavLinks.classList.remove('active');
+                        authButtons.classList.remove('active');
+                        mobileMenuBtn.querySelector('i').classList.remove('fa-times');
+                    }
+                });
+            });
+
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    if (href.startsWith('#')) {
+                        e.preventDefault();
+                        window.location.hash = href;
+                    }
+                });
+            });
+
+            window.addEventListener('hashchange', () => handlePageSwitch(window.location.hash));
+
+
+            // --- Profile Management ---
+            profileForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                showLoading();
+                try {
+                    const name = profileNameInput.value.trim();
+                    const email = auth.currentUser?.email || 'anonymous@vensysco.cloud'; 
+
+                    if (name) {
+                        await setDoc(userProfileRef, { name, email }, { merge: true });
+                        showMessage("Profile saved successfully!");
+                    } else {
+                        showMessage("Name cannot be empty.");
+                    }
+                } catch (e) {
+                    console.error("Error saving profile:", e);
+                    showMessage("Failed to save profile. Please try again.");
+                } finally {
+                    hideLoading();
+                }
+            });
+
+            // --- Service Creation with Dynamic Fields ---
+            const createServiceForm = document.getElementById('create-service-form');
+            const cloudProviderSelect = document.getElementById('cloud-provider');
+            const dynamicFieldsContainer = document.getElementById('dynamic-fields');
+            const serviceNameInput = document.getElementById('service-name');
+            const serviceDescriptionInput = document.getElementById('service-description');
+            const serviceTypeSelect = document.getElementById('service-type');
+
+            function generateDynamicFields(provider) {
+                dynamicFieldsContainer.innerHTML = '';
+                let fieldsHtml = '';
+
+                switch (provider) {
+                    case 'AWS':
+                    case 'Azure':
+                    case 'Oracle':
+                        fieldsHtml = `
+                            <div class="form-group">
+                                <label for="field-region">Region:</label>
+                                <input type="text" id="field-region" placeholder="e.g., us-east-1 / East US" class="dynamic-field">
+                            </div>
+                            <div class="form-group">
+                                <label for="field-instance-type">Instance Type / VM Size:</label>
+                                <input type="text" id="field-instance-type" placeholder="e.g., t2.micro / Standard_D2s_v3" class="dynamic-field">
+                            </div>
+                            <div class="form-group">
+                                <label for="field-storage-gb">Storage (GB):</label>
+                                <input type="number" id="field-storage-gb" placeholder="e.g., 100" class="dynamic-field" min="1">
+                            </div>
+                            <div class="form-group">
+                                <label for="field-os">Operating System:</label>
+                                <select id="field-os" class="dynamic-field">
+                                    <option value="">Select OS</option>
+                                    <option value="Linux">Linux</option>
+                                    <option value="Windows Server">Windows Server</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="field-network">Network Configuration:</label>
+                                <input type="text" id="field-network" placeholder="e.g., Public IP / Private Subnet" class="dynamic-field">
+                            </div>
+                        `;
+                        break;
+                    case 'Yotta':
+                    case 'Sify':
+                        fieldsHtml = `
+                            <div class="form-group">
+                                <label for="field-datacenter">Data Center Location:</label>
+                                <input type="text" id="field-datacenter" placeholder="e.g., Mumbai / Chennai" class="dynamic-field">
+                            </div>
+                            <div class="form-group">
+                                <label for="field-cpu-cores">CPU Cores:</label>
+                                <input type="number" id="field-cpu-cores" placeholder="e.g., 2" class="dynamic-field" min="1">
+                            </div>
+                            <div class="form-group">
+                                <label for="field-ram-gb">RAM (GB):</label>
+                                <input type="number" id="field-ram-gb" placeholder="e.g., 8" class="dynamic-field" min="1">
+                            </div>
+                            <div class="form-group">
+                                <label for="field-storage-gb">Storage (GB):</label>
+                                <input type="number" id="field-storage-gb" placeholder="e.g., 200" class="dynamic-field" min="1">
+                            </div>
+                            <div class="form-group">
+                                <label for="field-os">Operating System:</label>
+                                <select id="field-os" class="dynamic-field">
+                                    <option value="">Select OS</option>
+                                    <option value="Linux">Linux</option>
+                                    <option value="Windows Server">Windows Server</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        `;
+                        break;
+                    case 'Custom':
+                        fieldsHtml = `
+                            <p class="text-slate-500">No specific custom fields for 'Other / Custom' service type. Please describe in the description field.</p>
+                        `;
+                        break;
+                    default:
+                        break;
+                }
+                dynamicFieldsContainer.innerHTML = fieldsHtml;
+            }
+
+            cloudProviderSelect.addEventListener('change', (e) => {
+                generateDynamicFields(e.target.value);
+            });
+
+            createServiceForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                showLoading();
+                try {
+                    const customFields = {};
+                    dynamicFieldsContainer.querySelectorAll('.dynamic-field').forEach(field => {
+                        let value = field.value.trim();
+                        if (field.type === 'number') {
+                            value = parseFloat(value);
+                            if (isNaN(value)) value = '';
+                        }
+                        customFields[field.id.replace('field-', '')] = value;
+                    });
+
+                    const service = {
+                        name: serviceNameInput.value.trim(),
+                        description: serviceDescriptionInput.value.trim(),
+                        provider: cloudProviderSelect.value,
+                        type: serviceTypeSelect.value,
+                        customFields: customFields,
+                        createdAt: new Date().toISOString()
+                    };
+
+                    if (service.name && service.description && service.type && service.provider) {
+                        await addDoc(userServicesCollectionRef, service);
+                        showMessage("Service provisioned successfully!");
+                        createServiceForm.reset();
+                        generateDynamicFields('');
+                    } else {
+                        showMessage("Please fill in all required service details.");
+                    }
+                } catch (e) {
+                    console.error("Error provisioning service:", e);
+                    showMessage("Failed to provision service. Please try again.");
+                } finally {
+                    hideLoading();
+                }
+            });
+
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const mainNavLinks = document.querySelector('#home-page .nav-links');
+            const authButtons = document.querySelector('#home-page .auth-buttons');
+            
+            if(mobileMenuBtn) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    if(mainNavLinks) mainNavLinks.classList.toggle('active');
+                    if(authButtons) authButtons.classList.toggle('active');
+                    mobileMenuBtn.querySelector('i').classList.remove('fa-times');
+                });
+            }
+
+            const header = document.querySelector('#home-page .header');
+            window.addEventListener('scroll', () => {
+                if(header) header.classList.toggle('scrolled', window.scrollY > 50);
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const delay = parseInt(entry.target.getAttribute('data-delay'), 10) || 0;
+                        setTimeout(() => entry.target.classList.add('is-visible'), delay);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('[data-animation]').forEach(el => observer.observe(el));
+        });
+    </script>
+</body>
+</html>
